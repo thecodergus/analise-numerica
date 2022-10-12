@@ -4,12 +4,12 @@ module InterpolacaoPolinomial
     end
 
     function build_polynomial_function(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, n::Int64=length(coords_x))
-        coefs::Vector{<:Real} = vanderMonde(coords_x, coords_y)
+        coefs::Vector{<:Real} = vanderMonde(coords_x, coords_y, n)
 
-        return build_polynomial_function(coefs)
+        return build_polynomial_function!(coefs)
     end
 
-    function build_polynomial_function(coefs::Vector{<:Real})
+    function build_polynomial_function!(coefs::Vector{<:Real})
         return function (x::Number)
             return sum([valor * x^(index - 1) for (index, valor) in enumerate(coefs)])
         end
