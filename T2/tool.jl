@@ -1,6 +1,6 @@
 using Printf
 
-function printLine(item::Number)
+function printItem(item::Number)
    @printf "%.7f,\n" item
 end
 
@@ -9,13 +9,13 @@ function printMatrix(matrix::AbstractMatrix)
 
     for i = 1:tam[1]
         for j = 1:tam[2]
-            printLine(matrix[i, j])
+            printItem(matrix[i, j])
         end
     end
 end
 
 function printVector(v::AbstractVector)
     for i = v
-        printLine(i)
+        printItem(i)
     end
 end
