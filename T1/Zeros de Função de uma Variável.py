@@ -1,7 +1,7 @@
 from sympy.abc import *
 import sympy
 from sympy import *
-import math
+
 
 class T1:
 	def __init__(self, f, symbol=x) -> None:
@@ -65,34 +65,33 @@ class T1:
 
 
 if __name__ == "__main__":
-	g = 8.81
-	t = 0.88
-	xt = 4.32
-	f = (-(g / 2 * w**2) * (sinh(w*t) - sin(w*t))) - xt
+	A = 8.89
+	B = 16.67
+	f = A*B - 4*l*A - 4*l*B + 12*(l**2)
 
-	Funcoes = T1(f, w)
+	Funcoes = T1(f, l)
 	testes = {
 		"bissecao": {
 			"interacoes": [2, 4, 8, 12],
 			"intervalo": [
-				-5.13,0.67
+				0, 4.45
 			]
 		},
 		"newton": {
 			"interacoes": [1, 3, 5],
-			"intervalo": -1.16
+			"intervalo": 1.61
 		},
 		"secante": {
 			"interacoes": [1, 2, 5],
 			"intervalo": [
-				-4.56,
-				-1.26
+				0.97,
+				3.91
 			]
 		},
 		"posicao_falsa": {
 			"interacoes": [2, 4, 7, 11],
 			"intervalo": [
-				-5.91,0.18
+				0, 4.45
 			]
 		}
 	}

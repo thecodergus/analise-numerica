@@ -1,6 +1,4 @@
 from numpy import *
-import numpy
-from scipy import optimize as T
 
 class InterpolacaoSimples:
 	def __init__(self, a, b):
@@ -37,40 +35,38 @@ class InterpolacaoAcharFuncao:
 	def __f(self, a, b):
 		x = array(a, dtype = "double")
 		y = array(b, dtype = "double")
-		return poly1d(numpy.polyfit(x, y, len(a)))
+		return poly1d(T.fit(x, y, len(a)))
 
 	def get_value(self, x):
 		return self.f(x)
 
 
-# if __name__ == "__main__":
-# 	x = [-1.839, -0.564, 2.228]
-# 	y = [0.076, 3.303, 1.647]
+if __name__ == "__main__":
+	x = [-1.839, -0.564, 2.228]
+	y = [0.076, 3.303, 1.647]
 
-# 	t = InterpolacaoSimples(x, y)
+	t = InterpolacaoSimples(x, y)
 
 	
-# 	for i in t.get_coeficientes():
-# 		print("{:.11f},".format(i))
+	for i in t.get_coeficientes():
+		print("{:.11f},".format(i))
 
 # if __name__ == "__main__":
-# 	x = [1.532, 1.67, 1.839, 2.063, 2.239, 2.303, 2.504, 2.666, 2.842, 3.062, 3.215, 3.313, 3.562, 3.686, 3.842, 4.028, 4.181, 4.45, 4.572, 4.685, 4.892]
 # 	f = lambda x: cos(x + sqrt(log(x**2)))
+# 	x = [1.506, 2.011, 2.344, 2.637, 2.839, 3.3, 3.533, 3.919, 4.094, 4.612, 4.832]
+
 # 	t = InterpolacaoFuncao(f, x)
 
 	
 # 	for i in t.get_coeficientes():
 # 		print("{:.11f},".format(i))
 
-if __name__ == "__main__":	
-	
-	x = [0.0109, 0.8969, 1.7801, 2.8683, 4.004, 4.2499, 5.0442, 6.4043, 6.7618, 8.1742, 9.0051, 9.9303]
-	y = [0.6838, 2.224, 3.959, 5.8476, 8.1818, 8.7214, 10.3173, 12.9015, 13.4349, 16.2593, 17.4278, 18.8074]
-	values = [2.3136, 6.7516, 9.446]
+# if __name__ == "__main__":
+# 	x = [0.067, 0.548, 0.962, 1.577, 2.081, 2.578, 2.843, 3.5, 3.914]
+# 	y = [0.546, 0.888, 1.369, 1.943, 1.828, 0.82, 0.217, 0.842, 1.981]
+# 	values = [2.49, 2.667, 3.197, 3.875]
 
+# 	t = InterpolacaoAcharFuncao(x, y)
 
-
-	t = InterpolacaoAcharFuncao(x, y)
-
-	for i in values:
-		print("{:.11f},".format(t.get_value(i)))
+# 	for i in values:
+# 		print("{:.11f},".format(t.get_value(i)))
