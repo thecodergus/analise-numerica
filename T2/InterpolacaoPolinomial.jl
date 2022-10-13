@@ -8,6 +8,6 @@ module InterpolacaoPolinomial
     end
 
     function build_polynomial_function!(coefs::Vector{<:Real})
-        return x::Real -> sum([valor * x^(index - 1) for (index, valor) in enumerate(coefs)])
+        return x::Real -> sum([valor * x^index for (_, (index, valor)) in enumerate(zip(collect(0:(length(coefs) - 1)), coefs))])
     end
 end
