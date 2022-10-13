@@ -1,7 +1,7 @@
 { pkgs }: {
     deps = [
-        pkgs.julia-bin,
-        pkgs.python3
+        pkgs.python310
+        pkgs.julia-bin
     ];
      env = {
         PYTHON_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
