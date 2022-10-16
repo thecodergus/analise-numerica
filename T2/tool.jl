@@ -1,7 +1,7 @@
 using Printf
 
 function printItem(item::Number)
-   @printf "%.7f,\n" item
+    @printf "%.7f,\n" item
 end
 
 function printMatrix(matrix::AbstractMatrix)
