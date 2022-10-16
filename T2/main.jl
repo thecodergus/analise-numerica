@@ -3,20 +3,19 @@ include("tool.jl")
 
 
 
-
-x = [0.4508, 0.8387, 1.9576, 3.2516, 3.672, 4.4219, 5.4025, 5.8523, 6.6802, 8.1581, 8.7294, 9.7709]
-y = [4.7754, 4.0845, 3.9656, 3.4797, 3.3698, 3.3161, 3.2902, 3.2091, 3.8706, 4.017, 4.5495, 5.006]
-values = [1.5516, 1.7241, 2.8621]
-
+x = [0.0881, 0.2199, 0.3709, 0.552, 0.713, 0.8487, 1.1358, 1.2648, 1.4314, 1.6439, 1.7936, 1.8714]
+y = [6.9983, 7.6152, 8.1006, 11.0015, 13.9742, 16.5418, 27.3878, 32.7363, 41.555, 59.1029, 73.3571, 83.2471]
+values = [1.3774, 1.5064, 1.5594]
 
 
-(X, coeffs, Y) = InterpolaçãoPolinomial.regressão_linear(x, y, 2)
+
+(X, coeffs, Y) = InterpolaçãoPolinomial.regressão_linear(x, y, 1)
 
 f = InterpolaçãoPolinomial.build_polynomial_function(coeffs)
 
-printMatrix(X)
+# printMatrix(X)
 printVector(coeffs)
-printVector(Y)
+# printVector(Y)
 
 for i = values
     printItem(f(i))
