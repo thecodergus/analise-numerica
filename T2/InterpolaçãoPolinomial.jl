@@ -16,7 +16,7 @@ module InterpolaçãoPolinomial
         # coeficiente gerados
         coefs = X \ Y
 
-        return (X, coefs, Y)
+        return (coefs, build_polynomial_function(coefs))
     end
 
     # Ajuste a uma curva exponencial - Regressão Linear
