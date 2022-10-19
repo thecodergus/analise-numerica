@@ -1,6 +1,5 @@
 
 module InterpolaçãoPolinomial
-    include("tool.jl")
     vector_of_vectors_to_matrix(a) = reduce(vcat,transpose.(a))
 
     function vanderMonde(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, grau::Int64):: Vector{<:Real}
@@ -8,7 +7,7 @@ module InterpolaçãoPolinomial
     end
 
     # Ajusto de curva comum - Regressão Linear
-    function AjusteDeCurva(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, grau::Int64)
+    function AjusteDeCurva(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
         # esquerdo da equação
         X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
         # direito da equação
@@ -23,9 +22,30 @@ module InterpolaçãoPolinomial
     # y = a*(e^b*x) <=> ln y = ln a + b*x 
     # adaptação: y = a*(t^b*x) onde t e seu log log correspondete variam
     # Questão chata pra caralho, questão: Q12 de Ajuste de Curvas
-    function AjusteDeCurvaExponencial(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, grau::Int64 = 1; t = ℯ, ant_t = log)
+    function AjusteDeCurvaExponencial(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, t = ℯ, ant_t = log)
         # pq Y = ln y
-        coords_y = inv(coords_y)
+        coords_y = ant_t.(coords_y)
+        
+        # esquerdo da equação
+        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
+        # direito da equação
+        Y = vector_of_vectors_to_matrix([sum([yi * xi^i for (xi, yi) = zip(coords_x, coords_y)]) for i = 0:grau]) 
+        # coeficiente gerados
+        coefs = X \ Y
+ 
+        # coefs_cp = copy(coefs)
+        # coefs[1] = t^coefs[1]
+        
+        # Retornar os coeficientes, e a função adaptada para a situação
+        return (coefs, x::Real -> t^(sum([valor * x^index for (index, valor) in zip(Iterators.countfrom(0), coefs)])))
+    end
+
+    # Ajuste a uma curva exponencial 2 - Regressão Linear
+    # y = a*x*(e^b*x) <=> ln y = ln a + ln x + b*x 
+    function AjusteDeCurvaExponencial2(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, t = ℯ, ant_t = log)
+        # pq Y = ln y
+        coords_y = ant_t.(coords_y)
+        coords_x = ant_t.(coords_x)
         
         # esquerdo da equação
         X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
@@ -34,18 +54,19 @@ module InterpolaçãoPolinomial
         # coeficiente gerados
         coefs = X \ Y
 
-        # coefs_cp = copy(coefs)
-        # coefs[1] = t^coefs[1]
+        coefs_cp = copy(coefs)
+        coefs[1] = t^coefs[1]
         
         # Retornar os coeficientes, e a função adaptada para a situação
-        return (coefs, x::Real -> t^(sum([valor * x^index for (index, valor) in zip(Iterators.countfrom(0), coefs)])))
+        return (coefs, x::Real -> t^(sum([valor * x^index for (index, valor) in zip(Iterators.countfrom(0), coefs_cp)])))
     end
+
 
     # Ajuste a uma curva geométrica - Regressão Linear
     # Para funções do tipo y = a*x^b <=> ln y = ln a + x*ln b = a + b*x
-    function AjusteDeCurvaGeométrica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, grau::Int64 = 1; t = ℯ, ant_t = log)
-        map!(ant_t, coords_y, coords_y)
-        map!(ant_t, coords_x, coords_x)
+    function AjusteDeCurvaGeométrica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, t = ℯ, ant_t = log)
+        coords_y = ant_t.(coords_y)
+        coords_x = ant_t.(coords_x)
 
         # esquerdo da equação
         X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
@@ -65,7 +86,7 @@ module InterpolaçãoPolinomial
     # Ajusto de curva hiperbolica - Regressão Linear
     # y = a*(x / (x + b)) => 1/y = 1/a + b/(a * x) <=> 1/y = a + b*x
     # z = 1/y = a + b*x
-    function AjusteDeCurvaHiperbolica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, grau::Int64)
+    function AjusteDeCurvaHiperbolica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
         coords_x = inv.(coords_x) 
         coords_y = inv.(coords_y) 
         # esquerdo da equação
