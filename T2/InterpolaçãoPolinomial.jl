@@ -82,6 +82,7 @@ module InterpolaçãoPolinomial
         return (coefs, x::Real -> inv(sum([valor * inv(x)^index for (index, valor) in zip(Iterators.countfrom(0), coefs_cp)])))
     end
 
+    # Codigo que o Luas fez, entendo nada sobre o que ta rolando aqui dentro
     function lucas(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, grau::Int64)
         p = [(a, b) for (a, b) in zip(coords_x, coords_y)]
 
