@@ -1,4 +1,8 @@
 
+# Resolucação de Equação
+# Resumo Geral: Ax = b
+
+
 module InterpolaçãoPolinomial
     vector_of_vectors_to_matrix(a) = reduce(vcat,transpose.(a))
 
@@ -9,11 +13,11 @@ module InterpolaçãoPolinomial
     # Ajusto de curva comum - Regressão Linear
     function AjusteDeCurva(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
         # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
+        A =vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
         # direito da equação
         Y = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
         # coeficiente gerados
-        coefs = X \ Y
+        coefs = A \ b
 
         return (coefs, build_polynomial_function(coefs))
     end
@@ -27,11 +31,11 @@ module InterpolaçãoPolinomial
         coords_y = ant_t.(coords_y)
         
         # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
+        A =vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
         # direito da equação
-        Y = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
+        b = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
         # coeficiente gerados
-        coefs = X \ Y
+        coefs = A \ b
  
         # coefs_cp = copy(coefs)
         # coefs[1] = t^coefs[1]
@@ -42,7 +46,7 @@ module InterpolaçãoPolinomial
     end
 
     # Ajuste a uma curva exponencial 2 - Regressão Linear
-    # y = a*x*(e^b*x) <=> ln y = ln a + ln x + b*x  => ln y - ln x = ln a + b*x <=> ln (y/x) = ln a + b*x
+    # y = a*x*(e^b*x) <=> ln y = ln a + ln x + b*x  => ln y - ln A =ln a + b*x <=> ln (y/x) = ln a + b*x
     # Fonte: https://math.stackexchange.com/questions/2005899/is-it-possible-to-linearize-y-axebx-in-a-linear-regression
     # https://www.mathworks.com/matlabcentral/answers/540219-i-am-having-trouble-finding-the-curve-fit-of-an-equation-in-matlab
     function AjusteDeCurvaExponencial2(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, t = ℯ, ant_t = log)
@@ -51,13 +55,13 @@ module InterpolaçãoPolinomial
 
 
         # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
-        # X = [[sum(map (x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau]'
+        A =vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
+        # A =[[sum(map (x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau]'
         # direito da equação
         # Y = vector_of_vectors_to_matrix([sum([yi * xi^i for (xi, yi) = zip(coords_x, coords_y)]) for i = 0:grau]) 
-        Y = vector_of_vectors_to_matrix([sum(y2 .* (coords_x .^ i)) for i = 0:grau]) 
+        b = vector_of_vectors_to_matrix([sum(y2 .* (coords_x .^ i)) for i = 0:grau]) 
         # coeficiente gerados
-        coefs = X \ Y
+        coefs = A \ b
 
         coefs_cp = copy(coefs)
         coefs[1] = t^coefs[1]
@@ -71,15 +75,15 @@ module InterpolaçãoPolinomial
     # Ajuste a uma curva geométrica - Regressão Linear
     # Para funções do tipo y = a*x^b <=> ln y = ln a + x*ln b = a + b*x
     function AjusteDeCurvaGeométrica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, t = ℯ, ant_t = log)
+        coords_x =ant_t.(coords_x)
         coords_y = ant_t.(coords_y)
-        coords_x = ant_t.(coords_x)
 
         # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
+        A =vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
         # direito da equação
-        Y = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
+        b =vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
         # coeficiente gerados
-        coefs = X \ Y
+        coefs = A \ b
 
 
         coefs_cp = copy(coefs)
@@ -94,14 +98,14 @@ module InterpolaçãoPolinomial
     # y = a*(x / (x + b)) => 1/y = 1/a + b/(a * x) <=> 1/y = a + b*x
     # z = 1/y = a + b*x
     function AjusteDeCurvaHiperbolica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
-        coords_x = inv.(coords_x) 
+        coords_x =inv.(coords_x) 
         coords_y = inv.(coords_y) 
         # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
+        A =vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
         # direito da equação
-        Y = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
+        b = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
         # coeficiente gerados
-        coefs = X \ Y
+        coefs = A \ b
 
         coefs_cp = copy(coefs)
         coefs[1] = inv(coefs[1])
