@@ -10,7 +10,7 @@ module InterpolaçãoPolinomial
 
     function gerarCoefs(x::Vector{<:Real}, y::Vector{<:Real}, g::Int64)
         # lado esquerdo da equação
-        X = [sum(x.^(i + j)) for i = 0:g, j = 0:g]
+        X = [sum(x .^ (i + j)) for i = 0:g, j = 0:g]
         # lado direito da equação
         Y = [sum(y .* (x .^ i)) for i = 0:g]
 
