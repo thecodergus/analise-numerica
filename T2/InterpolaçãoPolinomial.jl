@@ -8,11 +8,11 @@ module InterpolaçãoPolinomial
         return vector_of_vectors_to_matrix(map(x -> [x^i for i = 0:grau], coords_x)) \ coords_y
     end
 
-    function gerarCoefs(x::Vector{<:Real}, y::Vector{<:Real}, g::Int64 = 1)
+    function gerarCoefs(x::Vector{<:Real}, y::Vector{<:Real}, g::Int64)
         # lado esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), x)) for j in 0:g] for i in 0:g])
+        X = [sum(x.^(i + j)) for i = 0:g, j = 0:g]
         # lado direito da equação
-        Y = vector_of_vectors_to_matrix([sum(y .* (x .^ i)) for i = 0:g]) 
+        Y = [sum(y .* (x .^ i)) for i = 0:g]
 
         return X \ Y
     end
