@@ -8,14 +8,18 @@ module InterpolaçãoPolinomial
         return vector_of_vectors_to_matrix(map(x -> [x^i for i = 0:grau], coords_x)) \ coords_y
     end
 
+    function gerarCoefs(x::Vector{<:Real}, y::Vector{<:Real}, g::Int64 = 1)
+        # lado esquerdo da equação
+        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), x)) for j in 0:g] for i in 0:g])
+        # lado direito da equação
+        Y = vector_of_vectors_to_matrix([sum(y .* (x .^ i)) for i = 0:g]) 
+
+        return X \ Y
+    end
+
     # Ajusto de curva comum - Regressão Linear
     function AjusteDeCurva(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
-        # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
-        # direito da equação
-        Y = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
-        # coeficiente gerados
-        coefs = X \ Y
+        coefs = gerarCoefs(coords_x, coords_y, grau)
 
         return (coefs, build_polynomial_function(coefs))
     end
@@ -28,12 +32,7 @@ module InterpolaçãoPolinomial
         # pq Y = ln y
         coords_y = ant_t.(coords_y)
         
-        # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
-        # direito da equação
-        Y = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
-        # coeficiente gerados
-        coefs = X \ Y
+        coefs = gerarCoefs(coords_x, coords_y, grau)
  
         # coefs_cp = copy(coefs)
         # coefs[1] = t^coefs[1]
@@ -51,15 +50,7 @@ module InterpolaçãoPolinomial
         # pq Y = ln y
         y2 = ant_t.(coords_y) - ant_t.(coords_x)
 
-
-        # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
-        # X = [[sum(map (x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau]'
-        # direito da equação
-        # Y = vector_of_vectors_to_matrix([sum([yi * xi^i for (xi, yi) = zip(coords_x, coords_y)]) for i = 0:grau]) 
-        Y = vector_of_vectors_to_matrix([sum(y2 .* (coords_x .^ i)) for i = 0:grau]) 
-        # coeficiente gerados
-        coefs = X \ Y
+        coefs = gerarCoefs(coords_x, y2, grau)
 
         coefs_cp = copy(coefs)
         coefs[1] = t^coefs[1]
@@ -76,13 +67,7 @@ module InterpolaçãoPolinomial
         coords_y = ant_t.(coords_y)
         coords_x = ant_t.(coords_x)
 
-        # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
-        # direito da equação
-        Y = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
-        # coeficiente gerados
-        coefs = X \ Y
-
+        coefs = gerarCoefs(coords_x, coords_y, grau)
 
         coefs_cp = copy(coefs)
         coefs[1] = t^coefs[1]
@@ -98,12 +83,8 @@ module InterpolaçãoPolinomial
     function AjusteDeCurvaHiperbolica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
         coords_x = inv.(coords_x) 
         coords_y = inv.(coords_y) 
-        # esquerdo da equação
-        X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
-        # direito da equação
-        Y = vector_of_vectors_to_matrix([sum(coords_y .* (coords_x .^ i)) for i = 0:grau]) 
-        # coeficiente gerados
-        coefs = X \ Y
+
+        coefs = gerarCoefs(coords_x, coords_y, grau)
 
         coefs_cp = copy(coefs)
         coefs[1] = inv(coefs[1])
