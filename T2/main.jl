@@ -1,4 +1,4 @@
-include("InterpolaçãoPolinomial.jl")
+include("AjusteDeCurvas.jl")
 include("tool.jl")
 
 
@@ -9,7 +9,7 @@ values = [0.8949, 1.3797, 2.5184, 3.3859, 9.1129]
 
 
 
-(coeffs, f) = InterpolaçãoPolinomial.AjusteDeCurvaExponencial2(x, y)
+(coeffs, f) = AjusteDeCurvas.AjusteDeCurvaExpo
 
 printVector(coeffs)
 

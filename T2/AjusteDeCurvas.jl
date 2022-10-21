@@ -1,7 +1,7 @@
 
 # Resumo gera: y = a + b*x
 
-module InterpolaçãoPolinomial
+module AjusteDeCurvas
     vector_of_vectors_to_matrix(a) = reduce(vcat,transpose.(a))
 
     function vanderMonde(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, grau::Int64):: Vector{<:Real}
