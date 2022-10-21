@@ -11,7 +11,7 @@ module InterpolaçãoPolinomial
     function gerarCoefs(x::Vector{<:Real}, y::Vector{<:Real}, g::Int64)
         # lado esquerdo da equação
         X = [sum(x .^ (i + j)) for i = 0:g, j = 0:g]
-        # lado direito da equação
+        # # lado direito da equação
         Y = [sum(y .* (x .^ i)) for i = 0:g]
 
         return X \ Y
@@ -21,7 +21,7 @@ module InterpolaçãoPolinomial
     function AjusteDeCurva(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
         coefs = gerarCoefs(coords_x, coords_y, grau)
 
-        return (coefs, build_polynomial_function(coefs))
+        return (coefs, build_polynomial_function(coefs, grau))
     end
 
     # Ajuste a uma curva exponencial - Regressão Linear
@@ -107,7 +107,7 @@ module InterpolaçãoPolinomial
         return β_final
     end
 
-    function build_polynomial_function(coefs::Vector{<:Real})::Function
+    function build_polynomial_function(coefs::Vector{<:Real}, grau::Int64)::Function
         return x::Real -> sum(coefs .* (x .^ collect(0:grau)))
     end
 end
