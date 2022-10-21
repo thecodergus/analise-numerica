@@ -41,16 +41,19 @@ module InterpolaçãoPolinomial
     end
 
     # Ajuste a uma curva exponencial 2 - Regressão Linear
-    # y = a*x*(e^b*x) <=> ln y = ln a + ln x + b*x 
+    # y = a*x*(e^b*x) <=> ln y = ln a + ln x + b*x  => ln y - ln x = ln a + b*x <=> ln (y/x) = ln a + b*x
+    # Fonte: https://math.stackexchange.com/questions/2005899/is-it-possible-to-linearize-y-axebx-in-a-linear-regression
+    # https://www.mathworks.com/matlabcentral/answers/540219-i-am-having-trouble-finding-the-curve-fit-of-an-equation-in-matlab
     function AjusteDeCurvaExponencial2(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, t = ℯ, ant_t = log)
         # pq Y = ln y
-        coords_y = ant_t.(coords_y)
-        coords_x = ant_t.(coords_x)
-        
+        y2 = ant_t.(coords_y) - ant_t.(coords_x)
+
+
         # esquerdo da equação
         X = vector_of_vectors_to_matrix([[sum(map(x -> x^(i + j), coords_x)) for j in 0:grau] for i in 0:grau])
         # direito da equação
-        Y = vector_of_vectors_to_matrix([sum([yi * xi^i for (xi, yi) = zip(coords_x, coords_y)]) for i = 0:grau]) 
+        # Y = vector_of_vectors_to_matrix([sum([yi * xi^i for (xi, yi) = zip(coords_x, coords_y)]) for i = 0:grau]) 
+        Y = vector_of_vectors_to_matrix([sum([yi * xi^i for (xi, yi) = zip(coords_x, y2)]) for i = 0:grau]) 
         # coeficiente gerados
         coefs = X \ Y
 
@@ -58,7 +61,7 @@ module InterpolaçãoPolinomial
         coefs[1] = t^coefs[1]
         
         # Retornar os coeficientes, e a função adaptada para a situação
-        return (coefs, x::Real -> t^(sum([valor * x^index for (index, valor) in zip(Iterators.countfrom(0), coefs_cp)])))
+        return (coefs, x::Real -> t^(sum([valor * x^index for (index, valor) in zip(Iterators.countfrom(0), coefs_cp)]))*x)
     end
 
 
