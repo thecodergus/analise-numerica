@@ -24,10 +24,12 @@ module AjusteDeCurvas
         return (coefs, build_polynomial_function(coefs, grau))
     end
 
-    # Ajuste a uma curva exponencial - Regressão Linear
-    # y = a*(e^b*x) <=> ln y = ln a + b*x 
-    # adaptação: y = a*(t^b*x) onde t e seu log log correspondete variam
-    # Questão chata pra caralho, questão: Q12 de Ajuste de Curvas
+    #=
+    Ajuste a uma curva exponencial - Regressão Linear
+    y = a*(e^b*x) <=> ln y = ln a + b*x 
+    adaptação: y = a*(t^b*x) onde t e seu log log correspondete variam
+    Questão chata pra caralho, questão: Q12 de Ajuste de Curvas
+    =#
     function AjusteDeCurvaExponencial(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, t = ℯ, ant_t = log)
         # pq Y = ln y
         coords_y = ant_t.(coords_y)
@@ -42,10 +44,12 @@ module AjusteDeCurvas
         # return (coefs, x::Real -> t^(sum([valor * x^index for (index, valor) in zip(Iterators.countfrom(0), coefs)])))
     end
 
-    # Ajuste a uma curva exponencial 2 - Regressão Linear
-    # y = a*x*(e^b*x) <=> ln y = ln a + ln x + b*x  => ln y - ln x = ln a + b*x <=> ln (y/x) = ln a + b*x
-    # Fonte: https://math.stackexchange.com/questions/2005899/is-it-possible-to-linearize-y-axebx-in-a-linear-regression
-    # https://www.mathworks.com/matlabcentral/answers/540219-i-am-having-trouble-finding-the-curve-fit-of-an-equation-in-matlab
+    #=
+    Ajuste a uma curva exponencial 2 - Regressão Linear
+    y = a*x*(e^b*x) <=> ln y = ln a + ln x + b*x  => ln y - ln x = ln a + b*x <=> ln (y/x) = ln a + b*x
+    Fonte: https://math.stackexchange.com/questions/2005899/is-it-possible-to-linearize-y-axebx-in-a-linear-regression
+    https://www.mathworks.com/matlabcentral/answers/540219-i-am-having-trouble-finding-the-curve-fit-of-an-equation-in-matlab
+    =#
     function AjusteDeCurvaExponencial2(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, t = ℯ, ant_t = log)
         # pq Y = ln y
         y2 = ant_t.(coords_y) - ant_t.(coords_x)
@@ -60,9 +64,10 @@ module AjusteDeCurvas
         # return (coefs, x::Real -> t^(sum([valor * x^index for (index, valor) in zip(Iterators.countfrom(0), coefs_cp)]))*x)
     end
 
-
-    # Ajuste a uma curva geométrica - Regressão Linear
-    # Para funções do tipo y = a*x^b <=> ln y = ln a + x*ln b = a + b*x
+    #=
+    Ajuste a uma curva geométrica - Regressão Linear
+    Para funções do tipo y = a*x^b <=> ln y = ln a + x*ln b = a + b*x
+    =#
     function AjusteDeCurvaGeométrica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, t = ℯ, ant_t = log)
         coords_y = ant_t.(coords_y)
         coords_x = ant_t.(coords_x)
@@ -77,9 +82,11 @@ module AjusteDeCurvas
         return (coefs, x::Real -> t^(sum(coefs_cp .* (ant_t(x) .^ collect(0:grau)))))
     end
 
-    # Ajusto de curva hiperbolica - Regressão Linear
-    # y = a*(x / (x + b)) => 1/y = 1/a + b/(a * x) <=> 1/y = a + b*x
-    # z = 1/y = a + b*x
+    #=
+    Ajusto de curva hiperbolica - Regressão Linear
+    y = a*(x / (x + b)) => 1/y = 1/a + b/(a * x) <=> 1/y = a + b*x
+    z = 1/y = a + b*x
+    =#
     function AjusteDeCurvaHiperbolica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
         coords_x = inv.(coords_x) 
         coords_y = inv.(coords_y) 
@@ -93,7 +100,9 @@ module AjusteDeCurvas
         return (coefs, x::Real -> inv(sum([valor * inv(x)^index for (index, valor) in zip(Iterators.countfrom(0), coefs_cp)])))
     end
 
-    # Codigo que o Luas fez, entendo nada sobre o que ta rolando aqui dentro
+    #=
+    Codigo que o Luas fez, entendo nada sobre o que ta rolando aqui dentro
+    =#
     function lucas(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, grau::Int64)
         p = [(a, b) for (a, b) in zip(coords_x, coords_y)]
 
