@@ -9,13 +9,21 @@ module AjusteDeCurvas
     end
 
     function gerarCoefs(x::Vector{<:Real}, y::Vector{<:Real}, g::Int64)
+        # Gerar de forma Chata
         # lado esquerdo da equação
         X = [sum(x .^ (i + j)) for i = 0:g, j = 0:g]
-        # # lado direito da equação
+        # lado direito da equação
         Y = [sum(y .* (x .^ i)) for i = 0:g]
-
+        
         return X \ Y
-    end
+
+        # Gerar de forma matematica
+        # OLS
+        # β = (x' * x ) \ (x' * y)
+        # coefs = (x * β)
+
+        # return coefs[1:(g + 1)]
+    end 
 
     # Ajusto de curva comum - Regressão Linear
     function AjusteDeCurva(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
@@ -87,8 +95,8 @@ module AjusteDeCurvas
     y = a*(x / (x + b)) => 1/y = 1/a + b/(a * x) <=> 1/y = a + b*x
     z = 1/y = a + b*x
     =#
-    function AjusteDeCurvaHiperbolica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
-        coords_x = inv.(coords_x) 
+    function AjusteDeCurvaHiperbolica(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1, expoente_x = 1)
+        coords_x = inv.(coords_x .^ expoente_x)
         coords_y = inv.(coords_y) 
 
         coefs = gerarCoefs(coords_x, coords_y, grau)
@@ -97,7 +105,7 @@ module AjusteDeCurvas
         coefs[1] = inv(coefs[1])
         coefs[2] *= coefs[1]
 
-        return (coefs, x::Real -> inv(sum([valor * inv(x)^index for (index, valor) in zip(Iterators.countfrom(0), coefs_cp)])))
+        return (coefs, x::Real -> inv(sum(coefs_cp .* (inv(x^expoente_x) .^ collect(0:grau)))))
     end
 
     #=
