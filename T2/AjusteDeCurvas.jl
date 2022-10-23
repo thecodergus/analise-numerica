@@ -2,6 +2,7 @@
 # Resumo gera: y = a + b*x
 
 module AjusteDeCurvas
+    using Statistics
     vector_of_vectors_to_matrix(a) = reduce(vcat,transpose.(a))
 
     function vanderMonde(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}, grau::Int64):: Vector{<:Real}
@@ -17,19 +18,29 @@ module AjusteDeCurvas
         
         return X \ Y
 
-        # Gerar de forma matematica
-        # OLS
-        # β = (x' * x ) \ (x' * y)
-        # coefs = (x * β)
-
-        # return coefs[1:(g + 1)]
     end 
 
     # Ajusto de curva comum - Regressão Linear
     function AjusteDeCurva(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
         coefs = gerarCoefs(coords_x, coords_y, grau)
 
-        return (coefs, build_polynomial_function(coefs, grau))
+        # return (coefs, build_polynomial_function(coefs, grau))
+        return (coefs, x::Real -> sum(coefs .* (x .^ collect(0:grau))))
+    end
+
+     #=
+        Ajusto de curva comum 2 - Regressão Linear
+        x = ℯ^((y - b)/a) <=> y = b + a * ln x
+    =#
+    function AjusteDeCurva2(coords_x::Vector{<:Real}, coords_y::Vector{<:Real}; grau::Int64 = 1)
+        coords_x = log.(coords_x)
+
+        coefs = gerarCoefs(coords_x, coords_y, grau)
+
+        coefs_cp = copy(coefs)
+        coefs[1], coefs[2] = coefs[2], coefs[1]
+
+        return (coefs, x::Real -> sum(coefs_cp .* (log(x) .^ collect(0:grau))))
     end
 
     #=
