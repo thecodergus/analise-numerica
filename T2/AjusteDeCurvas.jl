@@ -9,16 +9,17 @@ module AjusteDeCurvas
         return vector_of_vectors_to_matrix(map(x -> [x^i for i = 0:grau], coords_x)) \ coords_y
     end
 
-    function gerarCoefs(x::Vector{<:Real}, y::Vector{<:Real}, g::Int64)
+    function gerarCoefs(x::Vector{<:Real}, y::Vector{<:Real}, grau::Int64)
+        # Ta na mão de Deus
+        return fit(x, y, grau) |> coeffs
+    end
+
+    function gerarCoefs!(x::Vector{<:Real}, y::Vector{<:Real}, g::Int64)
         # Gerar de forma Chata
         # lado esquerdo da equação
         X = [sum(x .^ (i + j)) for i = 0:g, j = 0:g]
         # lado direito da equação
         Y = [sum(y .* (x .^ i)) for i = 0:g]
-        
-
-        # Ta na mão de Deus
-        # return fit(x, y, g)
 
         return X \ Y
 
