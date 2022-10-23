@@ -16,6 +16,6 @@ printVector(coeffs)
 # @test round.(coeffs, digits=7) == round.([3.30504266097, 2.13763041463], digits=7)
 # @test round.(f.(values), digits=7) == round.([1.77223866524, 1.74925576, 1.10643229204], digits=7)
 
-for i = values
-    printItem(f(i))
-end
+# for i = values
+#     printItem(f(i))
+# end

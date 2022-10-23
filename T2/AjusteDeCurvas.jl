@@ -65,7 +65,7 @@ module AjusteDeCurvas
         b = inv(B)
         a = A*b
         coefs = [a, b]
-        # coefs_cp = copy(coefs)
+        coefs_cp = copy(coefs)
 
         # return (coefs, x::Real -> sum(coefs_cp .* ((x^(-1/2)) .^ collect(0:grau))))
         return (
