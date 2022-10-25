@@ -1,7 +1,7 @@
 using Pkg
 
 # https://jverzani.github.io/CalculusWithJuliaNotes.jl/
-p = [
+pacotes = [
     "Polynomials",
     "DifferentialEquations",
     "Symbolics",
@@ -10,5 +10,5 @@ p = [
     "TaylorSeries"
 ]
 
+Pkg.add.(pacotes)
 
-Pkg.add(join(p, " "))
