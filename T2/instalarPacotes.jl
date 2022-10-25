@@ -3,7 +3,11 @@ using Pkg
 # https://jverzani.github.io/CalculusWithJuliaNotes.jl/
 p = [
     "Polynomials",
-    "DifferentialEquations"
+    "DifferentialEquations",
+    "Symbolics",
+    "ForwardDiff",
+    "MTH229",
+    "TaylorSeries"
 ]
 
 
