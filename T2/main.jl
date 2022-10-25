@@ -1,9 +1,9 @@
 using Test
 
-include("AjusteDeCurvas.jl")
-include("Derivada.jl")
-include("Integral.jl")
-include("tool.jl")
+include("modules/AjusteDeCurvas.jl")
+include("modules/Derivada.jl")
+include("modules/Integral.jl")
+include("tools/tool.jl")
 
 
 x = [0.6924, 1.4605, 2.7377, 3.4508, 4.186, 5.1095, 5.2956, 6.1019, 7.0271, 7.8615, 9.1405, 9.2407]
