@@ -10,5 +10,5 @@ pacotes = [
     "TaylorSeries"
 ]
 
-Pkg.add.(pacotes)
+Pkg.add(pacotes)
 
