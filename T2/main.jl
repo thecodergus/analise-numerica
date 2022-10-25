@@ -1,6 +1,8 @@
 using Test
 
 include("AjusteDeCurvas.jl")
+include("Derivada.jl")
+include("Integral.jl")
 include("tool.jl")
 
 
