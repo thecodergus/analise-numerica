@@ -1,10 +1,12 @@
 module Derivada
-    function derivada_finita(f::Function, x0, coords_x; ordem::Integer = 1, n::Integer = length(coords_x))
-        A::Matrix{Real}, B::Vector{Real} = ones(1, n), [0.0]
+    function derivada_finita(f::Function, x0, coords_x; ordem::Integer = 1)
+        n::Integer = length(coords_x)
         coords_y = f.(coords_x)
 
+        A::Matrix{Real}, B::Vector{Real} = ones(1, n), [0.0]
+
         for i = 1:(n - 1)
-            row_i = coords_x .* i
+            row_i = coords_x .^ i
             A = vcat(A, row_i')
 
             if i < ordem
@@ -19,11 +21,9 @@ module Derivada
                 push!(B, el)
             end
         end
-        println(A)
-        println(B)
 
-        # coeffs = A \ B
+        coeffs = A \ B
 
-        # return sum(coeffs .* coords_y)
+        return sum(coeffs .* coords_y)
     end
 end
