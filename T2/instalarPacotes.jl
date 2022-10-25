@@ -6,7 +6,7 @@ pacotes = [
     "DifferentialEquations",
     "Symbolics",
     "ForwardDiff",
-    "MTH229",
+    #"MTH229",
     "TaylorSeries"
 ]
 
