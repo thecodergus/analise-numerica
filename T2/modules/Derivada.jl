@@ -1,5 +1,5 @@
 module Derivada
-    function derivada_finita(f::Function, x0, coords_x; ordem::Integer = 1)
+    function derivada_finita(f::Function, x0::Real, coords_x::Vector{<:Real}; ordem::Integer = 1)::Real
         n::Integer = length(coords_x)
         A::Matrix{Real}, B::Vector{Real} = ones(1, n), zeros(1)
 
@@ -17,6 +17,7 @@ module Derivada
 
         coeffs = A \ B
 
+        println(f.(coords_x))
         return sum(coeffs .* f.(coords_x))
     end
 end
