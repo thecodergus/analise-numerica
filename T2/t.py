@@ -29,21 +29,20 @@ def dif_fin(coeffs, y):
 
 
 if __name__ == '__main__':
-    k = 2 # ordem
-    n = 5 # número de pontos
+    ordem = 5 # ordem
 
     
-    x0 = 4.4718
-    x = [4.2499, 4.4024, 4.5379, 4.6815]
-    f = lambda x: math.sin(x)**3 - 3*math.sin(x)**2 + math.sin(x**2) + 4
+    x0 = 1.5061
+    x = [1.2623, 1.3102, 1.356, 1.3724, 1.4005, 1.4316, 1.4651, 1.5162, 1.5521, 1.5807, 1.6022, 1.6304, 1.6734, 1.7104, 1.7534]
+    f = lambda x: x**2 * math.exp(-x) * math.cos(x) + 1
+    n = len(x)
 
     # queremos pontos no intervalo [x0-e, x0+e]
     e = 0.1 # tolerancias
     # x = np.linspace(x0 - e, x0 + e, n)
     y = [f(xi) for xi in x] 
-    print(y)
-    coeffs = coeffs_dif_fin(x0, x, k)
+    coeffs = coeffs_dif_fin(x0, x, ordem)
     aprox = dif_fin(coeffs, y)
 
     # print(f'{coeffs}')
-    # print(f'{aprox}')
+    print(f'{aprox}')
