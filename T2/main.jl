@@ -6,8 +6,15 @@ include("modules/Integral.jl")
 include("tools/prints.jl")
 
 
-f(x) = (x^2) * (ℯ^(-x)) * cos(x) + 1
-x0 = 0.9016
-x = [0.6797, 0.7037, 0.7276, 0.7558, 0.7864, 0.836, 0.8776, 0.8918, 0.9399, 0.9756, 1.0136, 1.0413, 1.0711, 1.1118, 1.1354]
+f(x) = 3 * cos((x^2 - 1)^(1 / 3))
+x0 = 7.5419
+order = 3
+x = [7.2982, 7.427, 7.4609, 7.5639, 7.7019, 7.7675]
+values = [7.344, 7.5698, 7.7657]
 
-printItem(Derivada.derivada_finita(f, x0, x; ordem=5))
+for xp in values
+    p = Derivada.taylor_series(f, x0, xp, x; ordem=order)
+    printItem(p)
+    printItem(abs(f(xp) - p))
+end
+    
