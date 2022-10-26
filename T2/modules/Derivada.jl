@@ -22,7 +22,7 @@ module Derivada
         return sum(calc_coefs(x0, coords_x; ordem=ordem) .* coords_y)
     end
 
-    function taylor_series(f::Function, x0::Float64, xp::Float64, coords_x::Vector{<:Float64}; ordem::Integer = 1, coords_y::Vector{Float64} = f.(coords_x))::Float64
+    function taylor_series(f::Function, x0::Float64, xp::Float64, coords_x::Vector{<:Float64}; ordem::Integer = 1, coords_y::Vector{<:Float64} = f.(coords_x))::Float64
         return f(x0) + sum([(derivada_finita(f, x0, coords_x; ordem = i, coords_y = coords_y) / factorial(i)) * (xp - x0)^i for i = 1:ordem])
     end
 end
