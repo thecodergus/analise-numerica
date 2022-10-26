@@ -17,7 +17,6 @@ module Derivada
 
         coeffs = A \ B
 
-        println(f.(coords_x))
         return sum(coeffs .* f.(coords_x))
     end
 end
