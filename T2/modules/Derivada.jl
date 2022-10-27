@@ -33,7 +33,7 @@ module Derivada
 
         n = length(coluna)
 
-        for i = 1:n, j = 1:(n - (i - 1) - 1)
+        for i = 1:n, j = 1:((n - 1) - (i - 1))
                 coluna[j] = (2^i * coluna[j + 1] - coluna[j]) / (2^i - 1)
         end
 
