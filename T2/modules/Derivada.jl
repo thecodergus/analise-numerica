@@ -25,4 +25,18 @@ module Derivada
     function taylor_series(f::Function, x0::Float64, xp::Float64, coords_x::Vector{<:Float64}; ordem::Integer = 1, coords_y::Vector{<:Float64} = f.(coords_x))::Float64
         return f(x0) + sum([(derivada_finita(f, x0, coords_x; ordem = i, coords_y = coords_y) / factorial(i)) * (xp - x0)^i for i = 1:ordem])
     end
+
+    function extrapolação_Richardson(f::Function, x0::Float64, h::Float64; ordem = 1)::Float64
+        df(h2) = (f(x0 + h2) - f(x0)) / h2
+
+        coluna = df.(fill(h, ordem) ./ (fill(2, ordem) .^ collect(0:(ordem-1))))
+
+        n = length(coluna)
+
+        for i = 1:n, j = 1:(n - (i - 1) - 1)
+                coluna[j] = (2^i * coluna[j + 1] - coluna[j]) / (2^i - 1)
+        end
+
+        return coluna |> first
+    end
 end

@@ -6,15 +6,13 @@ include("modules/Integral.jl")
 include("tools/prints.jl")
 
 
-f(x) = 3 * cos((x^2 - 1)^(1 / 3))
-x0 = 7.5419
-order = 3
-x = [7.2982, 7.427, 7.4609, 7.5639, 7.7019, 7.7675]
-values = [7.344, 7.5698, 7.7657]
+f(x) = x^2 * tan(sin(x / π))
+h = 0.32345
+x0 = 1.99224
+orders = [2, 3, 4, 5, 6]
 
-for xp in values
-    p = Derivada.taylor_series(f, x0, xp, x; ordem=order)
-    printItem(p)
-    printItem(abs(f(xp) - p))
+for i = orders
+    printItem(Derivada.extrapolação_Richardson(f, x0, h; ordem = i))
 end
-    
+
+
