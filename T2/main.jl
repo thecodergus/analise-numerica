@@ -6,18 +6,14 @@ include("modules/Integral.jl")
 include("tools/prints.jl")
 
 
-# f(x) = x^2 * tan(sin(x / π))
-# h = 0.32345
-# x0 = 1.99224
-# orders = [2, 3, 4, 5, 6]
 
-# for i = orders
-#     printItem(Derivada.extrapolação_Richardson(f, x0, h; ordem = i))
-# end
 
-f(x) = x^2 |> log |> sin |> cos
-x0 = 2.1946
-approximations = [-0.5074281417795365, -0.4749965329199277, -0.45801427937448125]
+f(x) = sqrt(sin(cos(log(x^2 + 1) + 2) + 3) + 4)
 
-printItem(Derivada.extrapolação_Richardson(approximations))
+intervalo = [-1.678, 1.273]
+subintervalos = [8, 24, 38, 58, 82, 120, 136, 170, 182, 236, 446]
 
+
+for i = subintervalos
+    printItem(Integral.Regra_de_Simpson(f, intervalo[1], intervalo[2], i))
+end

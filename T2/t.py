@@ -1,19 +1,20 @@
-import math
-import numpy as np
+# import math
+from numpy import *
+# Usado para aproximar o valor de uma integral
+def trapz(f, a, b, n):
+    h = (b-a) / n
+    soma = 0
+    for k in range(1, n):
+        soma += f(a + k*h)
+    soma *= 2
+    soma += (f(a) + f(b))
+    return (h/2) * soma
 
-def richardson(col_1):
-    n = len(col_1) - 1
-    for i in range(n - 1):
-        for j in range(n - 1 - i):
-            numer = 2 ** (i + 1) * col_1[j + 1] - col_1[j]
-            denom = 2 ** (i + 1) - 1
-            value = numer / denom
-            col_1[j] = value
-    return col_1[0]
 
-if __name__ == '__main__':
-    approximations = [-0.5074281417795365, -0.4749965329199277, -0.45801427937448125]
+f = lambda x: sin(e**(-x**2)) + 1
+a, b = [-1.68, 1.752]
+subintervalos = [1, 11, 31, 74, 76, 147, 172, 381, 605, 790, 2863, 6030]
 
-    new_value = richardson(approximations.copy())
-    aprox = richardson(approximations + [new_value])
-    print(aprox)
+for i in range(len(subintervalos)):
+    r = trapz(f, a, b, subintervalos[i])
+    print(r)
