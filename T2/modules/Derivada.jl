@@ -45,7 +45,9 @@ module Derivada
     end
 
     function extrapolação_Richardson(aproximações::Vector{Float64})::Float64
-        return append!(aproximações, copy(aproximações) |> extrapolação_Richardson!) |> extrapolação_Richardson!
+        novo_valor = extrapolação_Richardson!(aproximações)
+        push!(aproximações, novo_valor)
+        return extrapolação_Richardson!(aproximações)
     end
 
     
