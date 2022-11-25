@@ -10,6 +10,10 @@ macro expr2fn(fname, expr, args...)
     return fn
 end
 
-function criar_funçã(f::String; parametros = [])::Function
-    return @eval $(build_function(expand_derivatives(Differential(x)(f)), x))    
+function criar_função(f::String)::Function
+    return @eval x -> $(f |> Meta.parse)
+end
+
+function map_function(arr::Vector{String})::Vector{Function}
+    return criar_função.(arr)    
 end
