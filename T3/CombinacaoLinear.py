@@ -67,6 +67,6 @@ if __name__ == "__main__":
     f = problema.best_func(n=256)
 
     printVector(coefs)
-    printVector([*map(lambda x: f(x), values)])
+    printVector(map(lambda x: f(x), values))
 
     # print(problema.erro(n=512))
