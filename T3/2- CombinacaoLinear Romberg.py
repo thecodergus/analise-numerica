@@ -14,11 +14,25 @@ class CombinacaoLinear:
         self.a = a
         self.b = b
 
-    def trapezio(self, f, a, b, n = 256):
-        h = abs(b - a) / n
-        sum_fx = sum(map(lambda i: f(a + i * h), range(1, n))) * 2
+    def trapezio_romberh(self, f, a, b, h):
+        n = (b - a) // h
+        soma = sum(map(lambda i: f(a) + i * h, range(1, n))) * 2
 
-        return (f(a) + sum_fx + f(b)) * (h / 2)
+        return (h / 2) * (f(a) + f(b) + soma)
+        
+
+    def romberg(self, col):
+        n = len(col)
+        temp = zeros((n, n), dtype=double)
+
+        for j, i in product(range(n - 1), range(n - 1)):
+            i -= j
+            power = j + 1
+            temp[j, i] = (4 ** (power * col[i + 1] - col[i])) / (4 ** (power - 1))
+
+            col[:n - 1 - j] = temp[j]
+
+        return col[0]
 
     def get_coefs(self, n = 256):
         k = len(self.funcs)
@@ -46,19 +60,22 @@ class CombinacaoLinear:
         return lambda x: f((b + a) / 2 + (b - a) * x / 2) * (b - a) / 2
 
 
-    def erro(self, x, n = 512):
-        return (self.f(x) - self.best_func(n=n))**2
+    # def erro(self, x, n = 512):
+    #     return (self.f(x) - self.best_func(n=n)(x))**2
+
+    def calc_erro(self, values, n = 512):
+        return sum(map(lambda a: self.erro(a, n = n), values))
 
 if __name__ == "__main__":
-    func = 2 * math.sin(x) + math.cos(-x**2)
-    funcs = ['1', 'x', 'x**2', 'x**3', 'x**4', 'x**5']
-    a = -0.81969
-    b = 2.30316
+    func = x**2 * math.exp(x) * math.sqrt(math.log(2 + math.cos(-x**2)))
+    funcs = ['1', 'x', 'x**2', 'x**3', 'x**4', 'x**5', 'x**6', 'x**7', 'x**8']
+    a = -2.1461
+    b = 0.8646
 
     values = [
-        -0.28189,
-        0.6078,
-        1.87729
+        -1.62697,
+        -0.95364,
+        0.1389
     ]
 
 
@@ -69,4 +86,4 @@ if __name__ == "__main__":
     printVector(coefs)
     printVector(map(lambda x: f(x), values))
 
-    # print(problema.erro(n=512))
+    # printItem(problema.calc_erro(values, n=512))
