@@ -9,6 +9,7 @@ erro=∫2.048−2.059[f(x)−g(x)]2dx.
 Use o método da quadratura gaussiana com 10 nós para determinar o erro. """
 
 import numpy as np
+import math
 
 def trapz(f, a, b, n):
     h = abs(b - a) / n
@@ -43,7 +44,7 @@ def romberg(coluna_f1):
     return coluna_f1[0]
 
 
-def best_func(f, funcs, a, b, method: ['trapz', 256]):
+def best_func(f, funcs, a, b, method):
     k = len(funcs)
 
     A = [[0 for _ in range(k)] for _ in range(k)]
@@ -118,7 +119,7 @@ def change(f, a, b):
 
 
 def f(x):
-    return  x**2 * np.cos(x * np.sin(np.log(1 + x**2)))
+    return   (x**2) * math.exp(x) * math.sqrt(math.log(2 + math.cos(((-x)**2))))
 
 
 if __name__ == '__main__':
@@ -245,10 +246,10 @@ if __name__ == '__main__':
               0.10193011981724044, 0.10193011981724044, 0.08327674157670475, 0.08327674157670475, 0.06267204833410907,
               0.06267204833410907, 0.04060142980038694, 0.04060142980038694, 0.017614007139152118, 0.017614007139152118]
 
-    funcs = ['2', 'x - 1', 'x**2 + 1', 'x**3 + x - 3', '0.5 * x**4 - 3 * x**2 + 1', 'x**5 - 4 * x + 2', 'x**7-x']
-    a = -2.163
-    b =  2.105
-    values = [-1.112, -0.294, 1.849]
+    funcs = ['1', 'x', 'x**2', 'x**3', 'x**4', 'x**5', 'x**6', 'x**7', 'x**8']
+    a = -2.09919
+    b = 0.98561
+    values = [-1.68271, -0.33768, 0.72391]
     #romberg
     order = 8
     h = (b-a)/10
