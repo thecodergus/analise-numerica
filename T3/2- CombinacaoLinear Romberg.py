@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.linalg import solve
-from numpy import zeros, double
+from numpy import zeros, double, array
 from sympy.abc import x
 from sympy import lambdify
 import sympy as math
@@ -14,26 +14,26 @@ class CombinacaoLinear:
         self.a = a
         self.b = b
 
-    def trapezio_romberh(self, f, a, b, h):
+    def trapezio(self, f, a, b, h):
         n = (b - a) // h
         soma = sum(map(lambda i: f(a) + i * h, range(1, n))) * 2
 
         return (h / 2) * (f(a) + f(b) + soma)
         
 
-    def romberg(self, col):
-        n = len(col)
-        temp = zeros((n, n), dtype=double)
+    def romberg(self, col1):
+        n = len(col1)
+        col1 = array(col1)
 
-        for j, i in product(range(n - 1), range(n - 1)):
-            i -= j
-            power = j + 1
-            temp[j, i] = (4 ** (power * col[i + 1] - col[i])) / (4 ** (power - 1))
+        for j in range(n - 1):     # percorrer as colunas
+            temp_col = zeros(n - 1 - j)
+            for i in range(n - 1 - j):  # percorrer as linhas
+                power = j + 1
+                temp_col[i] = ((4 ** power) * col1[i + 1] - col1[i]) / (4 ** power - 1)
+            col1[:n - 1 - j] = temp_col
+        return col1[0]
 
-            col[:n - 1 - j] = temp[j]
-
-        return col[0]
-
+    # Aprox
     def get_coefs(self, n = 256):
         k = len(self.funcs)
         A = zeros((k, k), dtype=double)
@@ -59,12 +59,14 @@ class CombinacaoLinear:
     def change(f, a, b):
         return lambda x: f((b + a) / 2 + (b - a) * x / 2) * (b - a) / 2
 
+    def erro(self, ordem = 512):
+        h = (self.b - self.a) / 10
+        hs = [h / 2 ** i for i in range(ordem // 2)]
+        # f = lambda x: ( - )
 
-    # def erro(self, x, n = 512):
-    #     return (self.f(x) - self.best_func(n=n)(x))**2
+        # col1 = [*map(lambda x: self.trapezio(, self.a, self.b, x), hs)]
 
-    def calc_erro(self, values, n = 512):
-        return sum(map(lambda a: self.erro(a, n = n), values))
+        return self.romberg(col1)
 
 if __name__ == "__main__":
     func = x**2 * math.exp(x) * math.sqrt(math.log(2 + math.cos(-x**2)))

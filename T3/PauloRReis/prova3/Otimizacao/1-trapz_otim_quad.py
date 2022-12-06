@@ -207,18 +207,13 @@ peso20 = [0.15275338713072584, 0.15275338713072584, 0.14917298647260374, 0.14917
 
 #funcao
 def f(x):
-    return 2 * math.sin(x) + math.cos(-x**2)
+    return x**2 * math.exp(x) * math.sqrt(math.log(2 + math.cos(-x**2)))
 
 if __name__ == '__main__':
-    funcs = ['1', 'x', 'x**2', 'x**3', 'x**4', 'x**5']
-    a = -0.81969
-    b = 2.30316
-
-    values = [
-        -0.28189,
-        0.6078,
-        1.87729
-    ]
+    funcs = ['1', 'x', 'x**2', 'x**3', 'x**4', 'x**5', 'x**6', 'x**7', 'x**8']
+    a = -2.12319
+    b = 0.80603
+    values = [-1.40511, -0.83783, 0.67539]
 
     funcs = criar_funcoes(funcs)
 

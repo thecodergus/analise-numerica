@@ -46,7 +46,7 @@ def romberg(coluna_f1):
     return coluna_f1[0]
 
 
-def best_func(f, funcs, a, b, method: ['trapz', 256]):
+def best_func(f, funcs, a, b, method):
     k = len(funcs)
 
     A = [[0 for _ in range(k)] for _ in range(k)]
@@ -121,7 +121,7 @@ def change(f, a, b):
 
 
 def f(x):
-    return  x * math.sin(4 * x * math.cos(math.log(1 + x**2)))
+    return  x**2 * math.exp(x) * math.sqrt(math.log(2 + math.cos(-x**2)))
 
 
 if __name__ == '__main__':
@@ -256,10 +256,10 @@ if __name__ == '__main__':
     # h = (b - a) / 10
     # method = ['romberg', order, h]
 
-    funcs =  ['1', 'x', 'math.cos(x)', 'x**2', 'math.sin(x)', 'x**3', 'math.cos(2*x)', 'x**4', 'math.sin(3*x)']
-    a =  0.04
-    b = 2.146
-    values = [0.536, 0.968, 1.689]
+    funcs = ['1', 'x', 'x**2', 'x**3', 'x**4', 'x**5', 'x**6', 'x**7', 'x**8']
+    a = -2.12319
+    b = 0.80603
+    values = [-1.40511, -0.83783, 0.67539]
     exact_for_degree_less_than = 24
     order = str(int(exact_for_degree_less_than / 2))
     txt_order = ['raiz' + order, 'peso' + order]

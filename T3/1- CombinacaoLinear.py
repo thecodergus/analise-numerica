@@ -8,11 +8,12 @@ from itertools import *
 from print import *
 
 class CombinacaoLinear:
-    def __init__(self, f, fs, a, b):
+    def __init__(self, f, fs, a, b, ordem):
         self.f = lambdify([x], f)
         self.funcs = [*map(lambda a: lambdify([x], eval(a)), fs)]
         self.a = a
         self.b = b
+        self.ordem = ordem
 
     def trapezio(self, f, a, b, n = 256):
         h = abs(b - a) / n
@@ -45,12 +46,8 @@ class CombinacaoLinear:
     def change(f, a, b):
         return lambda x: f((b + a) / 2 + (b - a) * x / 2) * (b - a) / 2
 
-
-    # def erro(self, x, n = 512):
-    #     return (self.f(x) - self.best_func(n=n)(x))**2
-
-    def calc_erro(self, values, n = 512):
-        return sum(map(lambda a: self.erro(a, n = n), values))
+    def calc_erro(self, ordem = 512):
+        h = (b - a) / 10
 
 if __name__ == "__main__":
     func = x**2 * math.exp(x) * math.sqrt(math.log(2 + math.cos(-x**2)))
