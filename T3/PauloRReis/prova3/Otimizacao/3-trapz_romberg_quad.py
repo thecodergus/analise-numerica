@@ -248,7 +248,7 @@ if __name__ == '__main__':
               0.10193011981724044, 0.10193011981724044, 0.08327674157670475, 0.08327674157670475, 0.06267204833410907,
               0.06267204833410907, 0.04060142980038694, 0.04060142980038694, 0.017614007139152118, 0.017614007139152118]
 
-    f = lambda x: x**2 * math.cos(x * math.sin(math.log(1 + x**2)))
+    f = lambda x: x * math.sin(4 * x * math.cos(math.log(1 + x**2)))
     funcs = ['2', 'x - 1', 'x**2 + 1', 'x**3 + x - 3', '0.5 * x**4 - 3 * x**2 + 1', 'x**5 - 4 * x + 2', 'x**7-x']
     a = -2.07516
     b = 2.13848
@@ -257,11 +257,21 @@ if __name__ == '__main__':
     h = (b - a) / 10
     method = ['romberg', order, h]
 
+
+    # f = lambda x: x * math.sin(4 * x * math.cos(math.log(1 + x**2)))
+    # funcs = ['1', 'x', 'math.cos(x)', 'x**2', 'math.sin(x)', 'x**3', 'math.cos(2*x)', 'x**4', 'math.sin(3*x)']
+    # a = 0.16891
+    # b = 2.06264    
+    # values = [
+    #     0.5253,
+    #     1.22881,
+    #     1.62361
+    # ]
     
-    # exact_for_degree_less_than = 24
-    # order = str(int(exact_for_degree_less_than / 2))
-    # txt_order = ['raiz' + order, 'peso' + order]
-    # method = ['quadratura', locals()[txt_order[0]], locals()[txt_order[1]]]
+    exact_for_degree_less_than = 24
+    order = str(int(exact_for_degree_less_than / 2))
+    txt_order = ['raiz' + order, 'peso' + order]
+    method = ['quadratura', locals()[txt_order[0]], locals()[txt_order[1]]]
 
     funcs = criar_funcoes(funcs)
 

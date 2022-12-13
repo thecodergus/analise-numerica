@@ -7,14 +7,18 @@ erro=∫π−π[f(x)−g(x)]2dx.
 Use o método da quadratura gaussiana com 10 nós para determinar o erro. """
 
 from math import cos, sin, exp, pi, ceil
+import math
 
-a = -3.141592653589793
-b =  3.141592653589793
-n = 128
-xs = [-2.291, 0.371, 1.857]
 
-def f(x):
-    return x * sin(6 * exp(-x**2))
+
+def trapz(f, a, b, n):
+    h = abs(b - a) / n
+    sum_fx = 0
+
+    for i in range(1, n):
+        sum_fx += f(a + i * h)
+
+    return (f(a) + 2 * sum_fx + f(b)) * h / 2
 
 def simps(f, a, b, n):
     if (n % 2 != 0):
@@ -30,20 +34,7 @@ def simps(f, a, b, n):
     soma *= h/3.0
     return soma
     
-coeffs = []
 
-c = (1/(2 * pi)) * simps(f, a, b, n)
-coeffs.append(c)
-
-for m in range(1, 6):
-    am = (1/pi) * simps(lambda x: f(x) * cos(m * x), a, b, n)
-    coeffs.append(am)
-    bm = (1/pi) * simps(lambda x: f(x) * sin(m * x), a, b, n)
-    coeffs.append(bm)
-    
-for i in range(len(coeffs)):
-    print(f"c{i+1} = {coeffs[i]}")
-print("-------------------\n")
     
 def g(x, coeffs):
     soma = coeffs[0]
@@ -51,9 +42,6 @@ def g(x, coeffs):
         soma += coeffs[i] * cos(ceil(i/2)*x)
         soma += coeffs[i+1] * sin(ceil(i/2)*x)
     return soma
-
-for xi in xs:
-    print(f"x{xi} = {g(xi, coeffs)}")
     
 # calculando o erro com o método da quadratura gaussiana: 
 # com 10 nós (mudar se necessário)
@@ -74,11 +62,38 @@ def quadratura_zip(func_erro, pontos_e_pesos):
 def change_zip(func_erro, a, b, u):
     return func_erro((b+a)/2 + (b-a)*u/2) * (b-a)/2
     
-def g_erro(u):
-    return change_zip(func_erro, a, b, u)
-    
-erro = quadratura_zip(g_erro, n10)
 
-#imprimindo o erro:
-print("-------------------\n")
-print("Erro: ", erro)
+if __name__ == "__main__":
+    f = lambda x: x * math.sin(6 * math.exp(-x**2))
+
+    a = -3.141592653589793
+    b = 3.141592653589793
+
+    n = 1024
+    xs = [-1.574, 0.192, 2.428]
+    
+    coeffs = []
+
+    c = (1/(2 * pi)) * trapz(f, a, b, n)
+    coeffs.append(c)
+
+    for m in range(1, 6):
+        am = (1/pi) * simps(lambda x: f(x) * cos(m * x), a, b, n)
+        coeffs.append(am)
+        bm = (1/pi) * simps(lambda x: f(x) * sin(m * x), a, b, n)
+        coeffs.append(bm)
+        
+    for i in coeffs:
+        print(f"{i},")
+        
+    g_ = lambda x: sum([x**a for a in range(len(coeffs))])
+    
+    for i in xs:
+        print(f"{g_(i)},")
+        
+    def g_erro(u):
+        return change_zip(func_erro, a, b, u)
+    
+    
+    erro = quadratura_zip(g_erro, n10)
+    print(f"{erro},")

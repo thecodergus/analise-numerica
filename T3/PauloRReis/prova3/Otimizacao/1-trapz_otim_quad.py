@@ -210,14 +210,19 @@ def f(x):
     return x**2 * math.exp(x) * math.sqrt(math.log(2 + math.cos(-x**2)))
 
 if __name__ == '__main__':
-    funcs = ['1', 'x', 'x**2', 'x**3', 'x**4', 'x**5', 'x**6', 'x**7', 'x**8']
-    a = -2.12319
-    b = 0.80603
-    values = [-1.40511, -0.83783, 0.67539]
+    f = lambda x: x * math.sin(4 * x * math.cos(math.log(1 + x**2)))
+    funcs = ['1', 'x', 'math.cos(x)', 'x**2', 'math.sin(x)', 'x**3', 'math.cos(2*x)', 'x**4', 'math.sin(3*x)']
+    a = 0.16891
+    b = 2.06264    
+    values = [
+        0.5253,
+        1.22881,
+        1.62361
+    ]
 
     funcs = criar_funcoes(funcs)
 
-    coefs = best_func(f, funcs, a, b, n=256)
+    coefs = best_func(f, funcs, a, b, n=720)
 
     coefs = [ci for ci in coefs]
     
