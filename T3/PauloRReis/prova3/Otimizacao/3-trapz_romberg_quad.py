@@ -248,22 +248,20 @@ if __name__ == '__main__':
               0.10193011981724044, 0.10193011981724044, 0.08327674157670475, 0.08327674157670475, 0.06267204833410907,
               0.06267204833410907, 0.04060142980038694, 0.04060142980038694, 0.017614007139152118, 0.017614007139152118]
 
-    # funcs = ['2', 'x - 1', 'x**2 + 1', 'x**3 + x - 3', '0.5 * x**4 - 3 * x**2 + 1', 'x**5 - 4 * x + 2', 'x**7-x']
-    # a = -2.119
-    # b = 2.165
-    # values = [-1.803, 0.383, 1.841]
-    # order = 8
-    # h = (b - a) / 10
-    # method = ['romberg', order, h]
+    f = lambda x: x**2 * math.cos(x * math.sin(math.log(1 + x**2)))
+    funcs = ['2', 'x - 1', 'x**2 + 1', 'x**3 + x - 3', '0.5 * x**4 - 3 * x**2 + 1', 'x**5 - 4 * x + 2', 'x**7-x']
+    a = -2.07516
+    b = 2.13848
+    values = [-1.85902, -0.34352, 1.66707]
+    order = 8
+    h = (b - a) / 10
+    method = ['romberg', order, h]
 
-    funcs = ['1', 'x', 'x**2', 'x**3', 'x**4', 'x**5', 'x**6', 'x**7', 'x**8']
-    a = -2.12319
-    b = 0.80603
-    values = [-1.40511, -0.83783, 0.67539]
-    exact_for_degree_less_than = 24
-    order = str(int(exact_for_degree_less_than / 2))
-    txt_order = ['raiz' + order, 'peso' + order]
-    method = ['quadratura', locals()[txt_order[0]], locals()[txt_order[1]]]
+    
+    # exact_for_degree_less_than = 24
+    # order = str(int(exact_for_degree_less_than / 2))
+    # txt_order = ['raiz' + order, 'peso' + order]
+    # method = ['quadratura', locals()[txt_order[0]], locals()[txt_order[1]]]
 
     funcs = criar_funcoes(funcs)
 
@@ -271,7 +269,9 @@ if __name__ == '__main__':
 
     coefs = [ci for ci in coefs]
 
-    print(f'Coeficientes: {coefs}')
+    # print(f'Coeficientes: {coefs}')
+    for i in coefs:
+        print(f"{i},")
 
 
     def g(x):
@@ -279,7 +279,7 @@ if __name__ == '__main__':
 
 
     for x in values:
-        print(f'g({x}) = {g(x)}')
+        print(f'{g(x)},')
 
     # quadratura gaussina
     exact_for_degree_less_than = 20
@@ -294,7 +294,7 @@ if __name__ == '__main__':
 
     erro = quadratura(change(func_erro, a, b), locals()[txt_order[0]], locals()[txt_order[1]])
 
-    print(f'Erro = {erro}')
+    print(f'{erro},')
 
 """     # visualizacao
 
