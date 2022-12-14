@@ -19,8 +19,12 @@ def euler(f, x0, y0, h, n):
         vals.append([xk,y0])
     return vals
 
-def euler_mid(f, x0, y0, h, n):
-    for _ in range(n):
+def euler_mid(f, x0, y0, x_values, n):
+    for i in range(n):
+        if i > 0:
+            h = x_values[i] - x_values[i - 1]
+        else:
+            h = x_values[i] - x0
         m1 = f(x0, y0)
         m2 = f(x0 + h / 2, y0 + (h / 2) * m1)
         y0 = y0 + h * m2
@@ -31,27 +35,12 @@ if __name__ == '__main__':
     def f(x, y):
         return y * (2 - x) + x + 1
     
-    x0 = 1.33375
-    y0 = 1.13279
-    h = 0.15156
-    n = 15
-    #r1 = true_euler(f, x0, y0, h, n) #euler
-    #print(r1)
-    #x1, y1 = zip(*r1)
-    #print(y1)
-
-    r2 = euler_mid(f, x0, y0, h, n) #euler ponto medio
+    x0 = 1.51318
+    y0 = 1.34282
+    x_values = [1.53619, 1.60015, 1.64087, 1.69483, 1.75677, 1.80632, 1.83728, 1.87626, 1.93803, 1.98387, 2.02983, 2.09799, 2.14867, 2.16979, 2.25202, 2.29593, 2.33912, 2.36925, 2.4355, 2.49306]
+    n = 20
+    
+    
+    r2 = euler_mid(f, x0, y0, x_values, n) #euler ponto medio
     for _, i in r2:
         print(f"{i},")
-
-
-    #plot 
-    """
-    import matplotlib.pyplot as plt
-    t = np.linspace(x0, x0 + n * h, 200)
-    yt = [y(ti) for ti in t]
-    plt.plot(t, yt, color='blue')
-    plt.scatter(x1, y1, color='orange')
-    plt.scatter(x2, y2, color='magenta')
-    plt.savefig('euler.png')
-    """

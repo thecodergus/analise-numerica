@@ -92,13 +92,12 @@ if __name__ == '__main__':
 
     
 
-    func = lambda x: x**2 * math.exp(x) * math.sqrt(math.log(2 + math.cos(-x**2))) 
+    func = lambda x: x**2 * math.cos(x * math.sin(math.log(1 + x**2)))
+    funcs = ['2', 'x - 1', 'x**2 + 1', 'x**3 + x - 3', '0.5 * x**4 - 3 * x**2 + 1', 'x**5 - 4 * x + 2', 'x**7-x']
+    a = -2.07516
+    b = 2.13848
 
-    funcs = ['1', 'x', 'x**2', 'x**3', 'x**4', 'x**5', 'x**6', 'x**7', 'x**8']
-    a = -2.17762
-    b = 0.81468
-
-    values = [-1.75959, -0.73546, 0.11089]
+    values = [-1.09376, 0.1173, 0.94834]
 
     # Configs
     n = 256

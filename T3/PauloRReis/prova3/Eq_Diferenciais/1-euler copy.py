@@ -14,14 +14,13 @@ def euler(f, x0, y0, h, n):
         result.append([x0, y0])
     return result
 
-# def euler_mod(f, x0, y0, x_values, n):
-def euler_mod(f, x0, y0, h, n):
+def euler_mod(f, x0, y0, x_values, n):
     result = []
     for i in range(n):
-        # if i > 0:
-        #     h = x_values[i] - x_values[i - 1]
-        # else:
-        #     h = x_values[i] - x0
+        if i > 0:
+            h = x_values[i] - x_values[i - 1]
+        else:
+            h = x_values[i] - x0
         y0 += f(x0, y0) * h
         x0 += h
         result.append([x0, y0])
@@ -30,12 +29,12 @@ def euler_mod(f, x0, y0, h, n):
 if __name__ == '__main__':
 
     def f(x, y):
-        return y * (2 - x) + x + 1
+        return y * (1 - x) + x + 2
 
-    x0 = 1.30345
-    y0 = 1.88535
-    h = 0.125
-    n = 10
+    x0 = 1.59227
+    y0 = 0.46106
+    x_values = [1.6179, 1.67767, 1.73377, 1.75399, 1.83367, 1.85471, 1.93409, 1.95368, 2.01748, 2.07944, 2.13287, 2.16504, 2.20134, 2.28575, 2.30813, 2.37466, 2.43622, 2.4615, 2.53193, 2.5481]
+    n = 20
 
     #P3.7
     # def f(x, y):
@@ -45,8 +44,8 @@ if __name__ == '__main__':
     # h = 0.13102
     # n = 10
 
-    resposta = euler(f, x0, y0, h, n)
-    # resposta = euler_mod(f, x0, y0, x_values, n)
+    # resposta = euler(f, x0, y0, h, n)
+    resposta = euler_mod(f, x0, y0, x_values, n)
     
     for _, i in resposta:
         print(f"{i},")
