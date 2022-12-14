@@ -5,7 +5,9 @@ O esquiador aquático é puxado por uma corda de comprimento constante a que é 
 dydx=−ya2−y2−−−−−−√,y(x0)=y0.
 Se P0=(x0,y0), com x0=1.957 e y0=4.718, denota a posição inicial do esquiador. Use o método de Runge-Kutta de ordem 2 com b=0.612 para estimar a posição do esquiador nos pontos xk=x0+kh, onde k=1,2,…,10. Suponha que a=9.13 e h=0.097. """
 
-import math
+# import math
+import numpy
+math = numpy
 
 def RK2(f, x0, y0, h, n, b=0.612):
     a = 1 - b
@@ -21,10 +23,18 @@ def RK2(f, x0, y0, h, n, b=0.612):
 
 #Q11 Prova:
 def f(x,y):
-    a = 9.13 
+    a = 9.41744
     return -y/(math.sqrt(a**2 - y**2)) # a
 
-x0, y0 = 1.957, 4.718
-e = RK2(f,x0,y0, h=0.097,n=10)
-for xi, yi in e:
-    print(xi, yi)
+if __name__ == "__main__":
+    func = lambda x,y: y * (1 - x) + x + 2
+    x0 = 1.51516
+    y0 = 4.8934
+    h = 0.08282
+    b = 0.85342
+    n = 100
+    
+    e = RK2(f, x0, y0, h, n)
+
+    for i, v in e:
+        print(f"{v},")
