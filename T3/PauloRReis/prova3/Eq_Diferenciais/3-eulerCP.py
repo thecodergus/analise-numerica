@@ -6,7 +6,7 @@ def true_euler(f, k, x0, y0, h, n):
     for i in range(n):
         y0 += h * f(x0, y0, k)
         x0 += h        
-        print(f'x_{i + 1}={x0} e y_{i+1}={y0}')
+    return y0
 
 def euler(f, x0, y0, h, n):
     vals = []
@@ -30,26 +30,10 @@ if __name__ == '__main__':
         # y = P
         return k*y
     # t == x
-    x0, y0 = 0.0, 1763761 # x0 = t, y0 = individuos
+    x0, y0 = 0.0, 1216997 # x0 = t, y0 = individuos
+    k = 0.08268
     h = 0.0625
-    k = 0.0648
-    n = int(1 / h)
+    n = int(1 // h)
     r1 = true_euler(f, k, x0, y0, h, n)
-    #print(r1)
-    #x1, y1 = zip(*r1)
-    #print(y1)
-
-    #r2 = euler_mid(f, x0, y0, h, n)
-    #x2, y2 = zip(*r2)
-    #print(y2)
-
-    #plot 
-    """
-    import matplotlib.pyplot as plt
-    t = np.linspace(x0, x0 + n * h, 200)
-    yt = [y(ti) for ti in t]
-    plt.plot(t, yt, color='blue')
-    plt.scatter(x1, y1, color='orange')
-    plt.scatter(x2, y2, color='magenta')
-    plt.savefig('euler.png')
-    """
+    
+    print(r1)
