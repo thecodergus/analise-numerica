@@ -51,11 +51,11 @@ def comb(c, funcs):
 if __name__ == '__main__':
 
     # mudar aqui
-    a = -0.94689
-    b = 2.42677
-    x1 = -0.22787
-    x2 = 0.86787 
-    x3 = 1.96574
+    a = -0.85578
+    b = 2.42997
+    x1 = -0.09952
+    x2 = 1.01136
+    x3 = 1.99506
     subintervalo_para_coeficientes = 256
     subintervalo_para_erro = 512
 
